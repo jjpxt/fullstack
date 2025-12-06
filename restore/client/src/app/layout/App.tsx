@@ -3,9 +3,13 @@ import { Box, Container, createTheme, CssBaseline, ThemeProvider } from "@mui/ma
 import NavBar from "./navBar";
 import { Outlet } from "react-router-dom";
 
-function App() {
+const getInitialDarkMode = () => {
+  const storedDarkMode = localStorage.getItem('darkMode');
+  return storedDarkMode ? JSON.parse(storedDarkMode) : true
+}
 
-  const [darkMode, setDarkMode] = useState(false);
+function App() {
+  const [darkMode, setDarkMode] = useState(getInitialDarkMode());
   const palleteType = darkMode ? 'dark' : 'light'
 
   const theme = createTheme({
@@ -18,6 +22,7 @@ function App() {
   })
 
   const toggleDarkMode = () => {
+    localStorage.setItem('darkMode', JSON.stringify(!darkMode))
     setDarkMode(!darkMode);
   }
 
