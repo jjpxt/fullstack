@@ -1,4 +1,5 @@
 using API.Data;
+using API.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,11 +13,15 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 
 builder.Services.AddCors();
 
+builder.Services.AddTransient<ExceptionMiddleware>();
+
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors(opt =>
 {
-   opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:5173");
+    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:5173");
 });
 
 app.MapControllers();
